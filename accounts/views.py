@@ -50,7 +50,9 @@ def sign_up(request):
             login(request, user)
             return redirect('torrent:index')
         else:
-            messages.error(request, "Invalid registration form")
+            error_message = ('Invalid registration form. '
+                             'Check passwords match and are at least 6 characters long.')
+            messages.error(request, error_message)
             return render(request, template, context)
 
     else:

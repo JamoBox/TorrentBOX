@@ -1,3 +1,5 @@
+Fork of TorrentBOX to add Docker support and additional functionality.
+
 # TorrentBOX
 Multi-user based torrent download and sharing application written in Django  
 

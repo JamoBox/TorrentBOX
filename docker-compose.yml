@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+
+  db:
+    image: postgres
+
+  web:
+    build: .
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  torrentbox:
+    build: .
+    command: python3 manage.py celeryd --loglevel info --concurrency 5
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+    environment:
+      - C_FORCE_ROOT="true"
+      - RABBIT_BROKER_URL="amqp://guest@rabbitmq:5672//"
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    hostname: "rabbitmq"
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+    ports:
+      - "15672:15672"
+      - "5672:5672"

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 
 class TorrentBoxCreateForm(UserCreationForm):
+    error_messages = {}
     username = forms.CharField(
         required=True,
         widget=forms.TextInput(
@@ -18,7 +19,7 @@ class TorrentBoxCreateForm(UserCreationForm):
         min_length=6,
         widget=forms.widgets.PasswordInput(
             attrs={
-                'placeholder': 'Password',
+                'placeholder': 'Password (At least 6 characters)',
             }
         )
     )
@@ -28,7 +29,7 @@ class TorrentBoxCreateForm(UserCreationForm):
         min_length=6,
         widget=forms.widgets.PasswordInput(
             attrs={
-                'placeholder': 'Password confirm',
+                'placeholder': 'Confirm password',
             }
         )
     )

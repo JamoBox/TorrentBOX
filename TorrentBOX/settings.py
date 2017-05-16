@@ -14,12 +14,13 @@ PROJECT_PACKAGE = Path(__file__).resolve().parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 TORRENT_STORAGE = str(PROJECT_PACKAGE.joinpath('storage'))
-BROKER_URL = "amqp://guest@127.0.0.1:5672//"
+# BROKER_URL = os.environ.get("RABBIT_BROKER_URL", "amqp://guest@127.0.0.1:5672//")
+BROKER_URL = "amqp://guest@rabbitmq:5672//"
 CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 CELERY_TASK_SERIALIZER = 'pickle'
 CELERY_RESULT_SERIALIZER = 'pickle'
 CELERY_ACCEPT_CONTENT=['pickle']
-CELERY_TIMEZONE = 'Asia/Seoul'
+CELERY_TIMEZONE = 'Europe/London'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'e&pyvchx^crhx$x04zw*1tav*+z+&lhrmm55lyeg#30z3_3_4m'
@@ -82,8 +83,11 @@ WSGI_APPLICATION = 'TorrentBOX.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
 
@@ -114,9 +118,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-LANGUAGE_CODE = 'ko-kr'
+LANGUAGE_CODE = 'en-gb'
 
-TIME_ZONE = 'Asia/Seoul'
+TIME_ZONE = 'Europe/London'
 
 USE_I18N = True
 
