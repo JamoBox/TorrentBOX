@@ -40,6 +40,9 @@
         <i class="inverted user large icon"></i>
         {{ request.user.username }}
         <div class="menu">
+           <a class="item" href="{% url 'admin:index' %}">
+            <i class="sign out big icon"></i> Admin Settings
+          </a>
           <a class="item" href="{% url 'accounts:sign_out' %}">
             <i class="sign out big icon"></i> Sign out
           </a>
@@ -54,11 +57,12 @@
       <div class="ui secondary pointing menu">
         <a class="active item" data-tab="first">Add torrent link</a>
         <a class="item" data-tab="second">Upload torrent from PC</a>
+        <a class="item" data-tab="third">All torrents</a>
       </div>
 
       <div class="ui tab active" data-tab="first">
         <form class="ui fluid action input" action="{% url 'torrent:add' %}" method="post">{% csrf_token %}
-          <input type="text" id="torrent_url" name="torrent_url" placeholder="Paste here URL to torrent file">
+          <input type="text" id="torrent_url" name="torrent_url" placeholder="Paste URL to torrent file here">
           <button type="submit" class="ui teal button">
           Add torrent
           </button>

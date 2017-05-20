@@ -20,7 +20,8 @@ from .utils import filesize, get_remain_time
 
 @login_required
 def index(request):
-    torrents = Torrent.objects.get_actives(request.user)
+    # torrents = Torrent.objects.get_actives(request.user)
+    torrents = Torrent.objects.all()
     return render(request, 'torrent/index.html', {'torrents': torrents})
 
 @login_required
@@ -83,12 +84,15 @@ def delete(request, torrent_id):
 @login_required
 def add(request):
     # TODO: Support magnet URI
+    torrent_origin = None
     if 'torrent_file' in request.FILES:
         torrent_file = request.FILES['torrent_file']
         torrent_data = torrent_file.read()
+        torrent_origin = torrent_file
 
     elif 'torrent_url' in request.POST:
         url = request.POST['torrent_url']
+        torrent_origin = url
         try:
             URLValidator(message='URL is not valid, please enter a valid URL')(url)
         except ValidationError as e:
@@ -97,12 +101,18 @@ def add(request):
 
         response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
         torrent_data = response.content
+        print(torrent_data)
 
     else:
         return redirect('torrent:index')
 
     e = lt.bdecode(torrent_data)
-    info = lt.torrent_info(e)
+    try:
+        info = lt.torrent_info(e)
+    except RuntimeError as error:
+        messages.error(request, "Encountered unexpected issue indexing torrent.")
+        return redirect('torrent:index')
+
     torrent_hash = str(info.info_hash())
 
     # Current user already have this torrent
@@ -124,7 +134,8 @@ def add(request):
         progress = 0,
         download_rate = 0,
         downloaded_size = 0,
-        owner = request.user
+        owner = request.user,
+        origin = torrent_origin,
     )
 
     download_torrent.delay(new_torrent.id, torrent_data)

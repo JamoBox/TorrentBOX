@@ -14,6 +14,9 @@
         <div class="fourteen wide column dot-ellipsis dot-resize-update dot-height-20">
         {{ torrent.name }}
         </div>
+        <div class="fourteen wide column dot-height-20">
+          {{ torrent.origin }}
+        </div>
         <div class="two wide column">
           <a href="{% url 'torrent:delete' torrent_id=torrent.id %}">
             <i class="large link black remove right icon"></i>
@@ -21,7 +24,7 @@
         </div>
       </div>
     </h4>
-
+    {% if torrent.status == "downloading" %}
     <div id="{{ torrent.id }}" class="ui indicating progress active" data-percent="{{ torrent.progress }}" style="margin-bottom:10px;">
       <div id="{{ torrent.id }}_bar" class="bar" style="transition-duration: 300ms; width: {{ torrent.progress }}%">
         <div id="{{ torrent.id }}_progress" class="progress">
@@ -29,6 +32,7 @@
         </div>
       </div>
     </div>
+    {% endif %}
 
     <div id="{{ torrent.id }}_status" class="ui horizontal list">
       <div id="{{ torrent.id }}_drate" class="item">

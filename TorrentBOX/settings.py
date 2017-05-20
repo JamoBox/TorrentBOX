@@ -14,7 +14,6 @@ PROJECT_PACKAGE = Path(__file__).resolve().parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 TORRENT_STORAGE = str(PROJECT_PACKAGE.joinpath('storage'))
-# BROKER_URL = os.environ.get("RABBIT_BROKER_URL", "amqp://guest@127.0.0.1:5672//")
 BROKER_URL = "amqp://guest@rabbitmq:5672//"
 CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 CELERY_TASK_SERIALIZER = 'pickle'
