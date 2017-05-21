@@ -32,15 +32,15 @@ def status(request):
     for torrent in torrents:
         rtime = get_remain_time(torrent.size, torrent.downloaded_size, torrent.download_rate)
         status = dict(
-            id = torrent.id,
-            name = torrent.name,
-            size = filesize(torrent.size),
-            peers = torrent.peers,
-            status = torrent.status,
-            progress = torrent.progress,
-            download_rate = filesize(torrent.download_rate, suffix='B/s'),
-            downloaded_size = filesize(torrent.downloaded_size),
-            rtime = rtime
+            id=torrent.id,
+            name=torrent.name,
+            size=filesize(torrent.size),
+            peers=torrent.peers,
+            status=torrent.status,
+            progress=torrent.progress,
+            download_rate=filesize(torrent.download_rate, suffix='B/s'),
+            downloaded_size=filesize(torrent.downloaded_size),
+            rtime=rtime
         )
 
         status_list.append(status)
@@ -126,16 +126,16 @@ def add(request):
         return redirect('torrent:index')
 
     new_torrent = Torrent.objects.create(
-        name = info.name(),
-        hash = torrent_hash,
-        size = int(info.total_size()),
-        peers = 0,
-        status = 'queued',
-        progress = 0,
-        download_rate = 0,
-        downloaded_size = 0,
-        owner = request.user,
-        origin = torrent_origin,
+        name=info.name(),
+        hash=torrent_hash,
+        size=int(info.total_size()),
+        peers=0,
+        status='queued',
+        progress=0,
+        download_rate=0,
+        downloaded_size=0,
+        owner=request.user,
+        origin=torrent_origin,
     )
 
     download_torrent.delay(new_torrent.id, torrent_data)
