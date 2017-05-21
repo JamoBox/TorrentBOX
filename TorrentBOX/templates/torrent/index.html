@@ -32,6 +32,8 @@
         </div>
       </div>
     </div>
+    {% else %}
+    {{ torrent.status }}
     {% endif %}
 
     <div id="{{ torrent.id }}_status" class="ui horizontal list">
@@ -44,7 +46,7 @@
         {{ torrent.downloaded_size|filesize }} / {{ torrent.size|filesize }}
       </div>
       <div id="{{ torrent.id }}_rtime" class="item">
-        <i class="wait icon"></i> Remaining time: 
+        <i class="wait icon"></i> Remaining time:
         {% get_remain_time torrent.size torrent.downloaded_size torrent.download_rate %}
       </div>
     </div>
@@ -55,7 +57,7 @@
     </a>
     {% endif %}
   </div>
-  
+ 
   {% empty %}
   <div class="ui segment">
     <div class="ui secondary raised center aligned segment">

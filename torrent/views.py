@@ -57,9 +57,9 @@ def download(request, torrent_id):
         return sendfile(request, filepath, attachment=True, attachment_filename=torrent.name)
 
     else:
-        messages.error(request, "You can't download file until finished")
+        messages.error(request, "You can't download file until it has finished")
         return redirect('torrent:index')
-   
+
 @login_required
 def delete(request, torrent_id):
     torrent = get_object_or_404(Torrent, id=torrent_id, owner=request.user)
@@ -67,7 +67,7 @@ def delete(request, torrent_id):
     # Delete torrent entry but not delete real file in the server
     if torrent.status == 'finished':
         torrent.delete()
-    
+
     # Torrent entry will be deleted by celery task
     elif torrent.status == 'downloading':
         torrent.status = 'terminated'
